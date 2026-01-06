@@ -1,85 +1,69 @@
-const symbols = ["🍒","🍋","🔔","💎","7️⃣"];
-let money = Number(localStorage.getItem("money")) || 100000;
+const symbols = ["🍒","🔔","🍋","⭐","7️⃣","💎"];
+const reels = document.querySelectorAll(".reel-strip");
+
+let balance = 100000;
 let bet = 1000;
 let spinning = false;
 
-const moneyEl = document.getElementById("money");
-const betEl = document.getElementById("bet");
-const resultEl = document.getElementById("result");
+const balanceEl = document.getElementById("balance");
+const winEl = document.getElementById("win");
 
-function updateUI() {
-  moneyEl.textContent = money;
-  betEl.textContent = bet;
-  localStorage.setItem("money", money);
+balanceEl.textContent = balance;
+
+function createReel(strip) {
+  strip.innerHTML = "";
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement("div");
+    s.className = "symbol";
+    s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    strip.appendChild(s);
+  }
 }
 
-function randomSymbol() {
-  const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  return symbols[array[0] % symbols.length];
-}
+reels.forEach(createReel);
 
 function spin() {
-  if (spinning) return;
-  if (money < bet) {
-    resultEl.textContent = "❌ Không đủ tiền";
-    return;
-  }
-
+  if (spinning || balance < bet) return;
   spinning = true;
-  resultEl.textContent = "";
-  money -= bet;
-  updateUI();
+  winEl.textContent = "";
+  balance -= bet;
+  balanceEl.textContent = balance;
 
-  let result = [];
+  let results = [];
 
-  for (let i = 0; i < 5; i++) {
-    const reel = document.getElementById("r"+i);
-    reel.innerHTML = "";
-    for (let j = 0; j < 3; j++) {
-      const s = randomSymbol();
-      reel.innerHTML += `<div>${s}</div>`;
-      if (j === 1) result.push(s);
-    }
-  }
+  reels.forEach((strip, i) => {
+    createReel(strip);
+    strip.style.transition = "none";
+    strip.style.top = "0px";
+
+    const stop = -(Math.floor(Math.random()*10)+5)*60;
+    results.push(strip.children[Math.abs(stop/60)+1].textContent);
+
+    setTimeout(() => {
+      strip.style.transition = "top 1s cubic-bezier(.2,.8,.2,1)";
+      strip.style.top = stop + "px";
+    }, i*200);
+  });
 
   setTimeout(() => {
-    checkWin(result);
+    checkWin(results);
     spinning = false;
-  }, 500);
+  }, 2000);
 }
 
-function checkWin(line) {
+function checkWin(res) {
   let win = 0;
-  let count = 1;
-
-  for (let i = 1; i < line.length; i++) {
-    if (line[i] === line[i-1]) {
-      count++;
-      if (count >= 3) win = bet * count;
-    } else {
-      count = 1;
-    }
-  }
+  if (res.every(v => v === res[0])) win = bet * 10;
+  else if (new Set(res).size <= 2) win = bet * 3;
 
   if (win > 0) {
-    money += win;
-    resultEl.textContent = "🎉 Thắng " + win;
-  } else {
-    resultEl.textContent = "😢 Thua";
+    balance += win;
+    winEl.textContent = "WIN +" + win;
   }
-
-  updateUI();
+  balanceEl.textContent = balance;
 }
 
-function changeBet(v) {
-  bet = Math.max(1000, bet + v);
-  updateUI();
-}
-
-function allIn() {
-  bet = money;
-  updateUI();
-}
-
-updateUI();
+document.getElementById("spin").onclick = spin;
+document.getElementById("allin").onclick = () => bet = balance;
+document.getElementById("plus").onclick = () => bet += 500;
+document.getElementById("minus").onclick = () => bet = Math.max(500, bet - 500);
