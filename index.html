@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GO88 – Tài Xỉu</title>
-<link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GOLD SLOT</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+
 <div class="app">
-
-<header class="top">
-  <div class="logo">GO88</div>
-  <div class="stats">
-    <span>💰 <b id="money">10000</b></span>
-    <span>⏳ <b id="time">15</b>s</span>
-  </div>
-</header>
-
-<div class="panel">
-  <div class="md5">🔒 MD5: <span id="md5">----</span></div>
-
-  <div class="bowl-wrap">
-    <div id="bowl" class="bowl"></div>
+  <div class="top">
+    <div class="logo">GOLD SLOT</div>
+    <div class="money">💰 <span id="money">100000</span></div>
   </div>
 
-  <div class="dice-row">
-    <div class="dice" id="d1">?</div>
-    <div class="dice" id="d2">?</div>
-    <div class="dice" id="d3">?</div>
+  <div class="slot-frame">
+    <div class="reels">
+      <div class="reel" id="r0"></div>
+      <div class="reel" id="r1"></div>
+      <div class="reel" id="r2"></div>
+      <div class="reel" id="r3"></div>
+      <div class="reel" id="r4"></div>
+    </div>
   </div>
 
-  <div class="history" id="history"></div>
+  <div class="controls">
+    <div class="bet">
+      Cược: <span id="bet">1000</span>
+    </div>
 
-  <div class="chips">
-    <button data-chip="100">100</button>
-    <button data-chip="1000">1K</button>
-    <button data-chip="5000">5K</button>
-    <button id="allin">ALL IN</button>
-  </div>
+    <div class="buttons">
+      <button onclick="changeBet(-1000)">➖</button>
+      <button onclick="allIn()">ALL IN</button>
+      <button onclick="changeBet(1000)">➕</button>
+    </div>
 
-  <div class="actions">
-    <button id="betBtn">ĐẶT CƯỢC</button>
+    <button class="spin" onclick="spin()">🎰 SPIN</button>
+
+    <div class="result" id="result"></div>
   </div>
 </div>
 
-</div>
 <script src="game.js"></script>
 </body>
 </html>
