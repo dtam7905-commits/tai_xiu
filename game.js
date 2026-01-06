@@ -1,112 +1,63 @@
 let money = 10000;
-let time = 20;
-let timer = null;
-let forceResult = null; // "TAI" | "XIU" | null
-let clickCount = 0;
+let time = 15;
+let timer;
+let lastBet = null;
 
-const ADMIN_PIN = "8888";
+const moneyEl = document.getElementById("money");
+const timeEl = document.getElementById("time");
+const md5El = document.getElementById("md5");
+const diceEls = document.querySelectorAll(".dice");
+const resultEl = document.getElementById("result");
 
-const lobby = document.getElementById("lobby");
-const game = document.getElementById("game");
-const admin = document.getElementById("admin");
-
-/* ===== NAV ===== */
-function enterGame() {
-  lobby.classList.remove("active");
-  game.classList.add("active");
-  startRound();
+function randomMD5() {
+  return Math.random().toString(36).substring(2, 10);
 }
 
-function backLobby() {
-  location.reload();
-}
-
-/* ===== GAME LOOP ===== */
 function startRound() {
-  clearInterval(timer);
-  time = 20;
-  updateUI();
-  genMD5();
+  time = 15;
+  md5El.textContent = randomMD5();
+  diceEls.forEach(d => d.textContent = "?");
+  resultEl.textContent = "Đặt cược";
 
+  clearInterval(timer);
   timer = setInterval(() => {
     time--;
-    updateUI();
-    if (time <= 0) rollDice();
+    timeEl.textContent = time;
+    if (time <= 0) endRound();
   }, 1000);
 }
 
-function genMD5() {
-  const md5 = Math.random().toString(36).substring(2, 10);
-  document.getElementById("md5").innerText = md5;
+function bet(type) {
+  lastBet = type;
+  resultEl.textContent = "Đã chọn: " + (type === "tai" ? "TÀI" : "XỈU");
 }
 
-function rollDice() {
+function endRound() {
   clearInterval(timer);
 
-  let dice = [rand(), rand(), rand()];
-  let sum = dice[0] + dice[1] + dice[2];
-  let result = sum >= 11 ? "TAI" : "XIU";
+  const dice = [
+    Math.ceil(Math.random()*6),
+    Math.ceil(Math.random()*6),
+    Math.ceil(Math.random()*6)
+  ];
 
-  if (forceResult) result = forceResult;
+  diceEls.forEach((d,i)=>d.textContent = dice[i]);
 
-  showDice(dice);
-  addHistory(result);
+  const sum = dice.reduce((a,b)=>a+b,0);
+  const result = sum >= 11 ? "tai" : "xiu";
 
-  setTimeout(startRound, 2000);
-}
-
-function rand() {
-  return Math.floor(Math.random() * 6) + 1;
-}
-
-function showDice(d) {
-  document.getElementById("d1").innerText = d[0];
-  document.getElementById("d2").innerText = d[1];
-  document.getElementById("d3").innerText = d[2];
-}
-
-/* ===== BET ===== */
-function bet(type) {
-  alert("Đặt " + type + " (demo)");
-}
-
-/* ===== UI ===== */
-function updateUI() {
-  document.getElementById("money").innerText = money;
-  document.getElementById("time").innerText = time;
-}
-
-function addHistory(r) {
-  const h = document.getElementById("history");
-  const span = document.createElement("span");
-  span.innerText = r + " ";
-  span.style.color = r === "TAI" ? "#ffd700" : "#00c8ff";
-  h.prepend(span);
-}
-
-/* ===== ADMIN ẨN (CHẠM 5 LẦN) ===== */
-document.getElementById("title").addEventListener("click", () => {
-  clickCount++;
-  if (clickCount >= 5) {
-    const pin = prompt("Nhập PIN Admin:");
-    if (pin === ADMIN_PIN) {
-      admin.classList.remove("hidden");
-    } else {
-      alert("Sai PIN");
-    }
-    clickCount = 0;
+  if (lastBet === result) {
+    money += Number(bet.value);
+    resultEl.textContent = "🎉 THẮNG ("+sum+")";
+  } else {
+    money -= Number(bet.value);
+    resultEl.textContent = "❌ THUA ("+sum+")";
   }
-});
 
-function setForce(v) {
-  forceResult = v;
-  alert("Kết quả = " + (v ? v : "RANDOM"));
+  moneyEl.textContent = money;
+  lastBet = null;
+
+  setTimeout(startRound, 3000);
 }
 
-function applyMoney() {
-  const v = parseInt(document.getElementById("setMoney").value);
-  if (!isNaN(v)) {
-    money = v;
-    updateUI();
-  }
-}
+startRound();
