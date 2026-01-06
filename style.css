@@ -170,3 +170,25 @@ input[type=number] {
 .hidden {
   display: none;
 }
+/* ===== CASINO PANEL FIX ===== */
+.casino-panel {
+  width: 100%;
+  max-width: 420px;
+  min-height: 88vh;
+  margin: auto;
+  padding: 20px 16px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: linear-gradient(
+    180deg,
+    #1a1a1a 0%,
+    #050505 100%
+  );
+
+  border-radius: 18px;
+  box-shadow:
+    0 0 40px rgba(255,215,0,.15),
+    inset 0 0 30px rgba(0,0,0,.9);
+}
