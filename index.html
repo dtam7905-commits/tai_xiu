@@ -1,24 +1,53 @@
-<div id="app">
-  <div class="header">GOLD SLOT</div>
-  <div class="balance">💰 <span id="balance"></span></div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GOLD SLOT</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title">GOLD SLOT</div>
+    <div class="balance">💰 <span id="money">100000</span></div>
+  </div>
+
+  <!-- SLOT FRAME -->
   <div class="slot-frame">
     <div class="reels">
-      <div class="reel"><div class="reel-strip"></div></div>
-      <div class="reel"><div class="reel-strip"></div></div>
-      <div class="reel"><div class="reel-strip"></div></div>
-      <div class="reel"><div class="reel-strip"></div></div>
-      <div class="reel"><div class="reel-strip"></div></div>
+      <div class="reel">🍒</div>
+      <div class="reel">🍋</div>
+      <div class="reel">🔔</div>
+      <div class="reel">💎</div>
+      <div class="reel">⭐</div>
     </div>
   </div>
 
-  <div class="controls">
-    <div class="bet">
-      <button id="minus">-</button>
-      <button id="allin">ALL IN</button>
-      <button id="plus">+</button>
+  <!-- BET PANEL -->
+  <div class="bet-panel">
+    <div class="bet-row">
+      <button class="bet-btn">−</button>
+      <div class="bet-amount">Cược: <span id="bet">1000</span></div>
+      <button class="bet-btn">+</button>
     </div>
-    <button id="spin">🎰 SPIN</button>
-    <div class="win" id="win"></div>
+
+    <button class="allin">ALL IN</button>
   </div>
+
+  <!-- SPIN -->
+  <button class="spin">🎰 SPIN</button>
+
+  <!-- INFO -->
+  <div class="info">
+    <div>Thắng: <span id="win">0</span></div>
+    <div class="history">Lịch sử: 🍒 🍋 ⭐</div>
+  </div>
+
 </div>
+
+</body>
+</html>
