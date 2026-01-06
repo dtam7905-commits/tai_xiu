@@ -132,3 +132,12 @@ body {
   margin-top: 6px;
   opacity: 0.8;
 }
+.symbol {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #ffd966;
+  text-shadow: 0 0 8px gold;
+}
