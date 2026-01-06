@@ -1,97 +1,100 @@
 * {
   box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #222, #000);
-  font-family: system-ui, sans-serif;
+  background: radial-gradient(circle at top, #222 0%, #000 70%);
   color: #ffd24d;
-}
-
-.app {
-  max-width: 420px;
-  margin: auto;
-  padding: 16px;
-}
-
-.top {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
 }
 
-.logo {
-  font-size: 28px;
-  font-weight: 800;
-  text-shadow: 0 0 15px gold;
+#app {
+  width: 390px;
+  padding: 20px;
 }
 
-.money {
+.header {
+  text-align: center;
+  font-size: 34px;
+  font-weight: bold;
+  text-shadow: 0 0 15px #ffd24d;
+  margin-bottom: 10px;
+}
+
+.balance {
+  text-align: right;
   font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .slot-frame {
-  margin: 20px 0;
+  background: linear-gradient(#111, #000);
+  border: 4px solid #d4af37;
+  border-radius: 18px;
   padding: 12px;
-  border-radius: 20px;
-  background: linear-gradient(180deg, #111, #000);
-  box-shadow: 0 0 30px rgba(255,215,0,.4);
+  box-shadow: inset 0 0 20px #000, 0 0 25px #000;
 }
 
 .reels {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
 }
 
 .reel {
   width: 60px;
   height: 180px;
+  overflow: hidden;
   background: #000;
   border-radius: 12px;
-  border: 2px solid gold;
+  border: 2px solid #d4af37;
+  position: relative;
+}
+
+.reel-strip {
+  position: absolute;
+  width: 100%;
+}
+
+.symbol {
+  height: 60px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   align-items: center;
-  font-size: 32px;
-  box-shadow: inset 0 0 10px rgba(255,215,0,.3);
+  justify-content: center;
+  font-size: 34px;
+  color: #ffd24d;
+  text-shadow: 0 0 8px #ffd24d;
 }
 
 .controls {
+  margin-top: 15px;
   text-align: center;
 }
 
 .bet {
-  margin-bottom: 8px;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 10px;
 }
 
 button {
-  padding: 10px 14px;
-  border-radius: 20px;
+  background: linear-gradient(#ffd24d, #caa233);
   border: none;
-  background: #222;
-  color: gold;
-  font-weight: 700;
-}
-
-.spin {
-  width: 100%;
-  padding: 14px;
+  border-radius: 30px;
+  padding: 12px 24px;
   font-size: 18px;
-  background: linear-gradient(180deg, gold, orange);
-  color: #000;
-  box-shadow: 0 0 20px rgba(255,215,0,.6);
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 15px #ffd24d;
 }
 
-.result {
+button:active {
+  transform: scale(0.95);
+}
+
+.win {
   margin-top: 10px;
-  min-height: 24px;
-  font-weight: 700;
+  font-size: 22px;
+  color: #00ff99;
+  text-shadow: 0 0 10px #00ff99;
 }
