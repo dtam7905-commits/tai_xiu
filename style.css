@@ -1,77 +1,95 @@
-*{box-sizing:border-box;font-family:system-ui}
-body{
-  margin:0;
-  background:radial-gradient(circle at top,#222,#000 70%);
-  color:#ffd86b;
-}
-.app{max-width:420px;margin:auto;min-height:100vh;padding:12px}
-
-.top{display:flex;justify-content:space-between;align-items:center}
-.logo{
-  font-size:34px;font-weight:800;color:#ffd700;
-  text-shadow:0 0 20px #ffd700;
-}
-.stats span{margin-left:10px;font-size:14px}
-
-.panel{
-  margin-top:14px;padding:14px;border-radius:18px;
-  background:linear-gradient(#0f0f0f,#050505);
-  border:2px solid #ffd700;
-  box-shadow:0 0 30px rgba(255,215,0,.35);
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #222 0%, #000 70%);
+  color: #ffd24d;
 }
 
-.md5{font-size:12px;opacity:.9;margin-bottom:8px;text-align:center}
-
-.bowl-wrap{display:flex;justify-content:center;margin:10px 0}
-.bowl{
-  width:180px;height:110px;
-  border-radius:0 0 110px 110px;
-  background:linear-gradient(#1a1a1a,#2a2a2a);
-  border:3px solid #ffd700;
-  box-shadow:0 0 35px #ffd700;
-  transition:transform .4s ease, opacity .4s ease;
-}
-.bowl.shake{animation:shake .5s infinite}
-@keyframes shake{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-4px)}
-  50%{transform:translateX(4px)}
-  100%{transform:translateX(0)}
-}
-.bowl.open{opacity:.15}
-
-.dice-row{
-  display:flex;justify-content:center;gap:14px;margin:12px 0
-}
-.dice{
-  width:54px;height:54px;border-radius:12px;
-  border:2px solid #ffd700;
-  display:flex;align-items:center;justify-content:center;
-  font-size:26px;background:#111;
-  box-shadow:0 0 18px #ffd700;
+.app {
+  max-width: 420px;
+  margin: auto;
+  min-height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-.history{
-  display:flex;justify-content:center;gap:6px;margin:8px 0 14px
+/* HEADER */
+.header {
+  text-align: center;
+  margin-bottom: 12px;
 }
-.history span{
-  width:16px;height:16px;border-radius:50%;
-  background:#444
-}
-.history .tai{background:#ffd700}
-.history .xiu{background:#ff9800}
 
-.chips{display:flex;justify-content:center;gap:10px;margin-bottom:12px}
-.chips button{
-  padding:8px 12px;border-radius:10px;
-  background:#111;color:#ffd700;border:2px solid #ffd700
+.logo {
+  font-size: 36px;
+  font-weight: 800;
+  text-shadow: 0 0 15px #ffcc00;
 }
-#allin{box-shadow:0 0 10px #ff9800;border-color:#ff9800}
 
-.actions button{
-  width:100%;padding:14px;border-radius:28px;
-  font-size:18px;font-weight:700;border:none;
-  background:linear-gradient(#ffd700,#ffb400);color:#000;
-  box-shadow:0 0 20px #ffd700;
+.stats {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.9;
 }
-.actions button:disabled{opacity:.5}
+
+/* KHUNG GAME */
+.game-frame {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1a1a1a, #000);
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
+  text-align: center;
+}
+
+/* BÁT / XÚC XẮC */
+.dice-area {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.dice {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: #111;
+  border: 2px solid #ffcc00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 0 10px rgba(255,204,0,.4);
+}
+
+/* CHIP */
+.chips {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.chip {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px 0;
+  border-radius: 20px;
+  background: #222;
+  border: 1px solid #ffcc00;
+  color: #ffcc00;
+  font-weight: 600;
+}
+
+/* NÚT ĐẶT CƯỢC */
+.bet-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #ffd84d, #ffb700);
+  color: #000;
+  font-size: 18px;
+  font-weight: 800;
+  border: none;
+  box-shadow: 0 0 20px rgba(255,200,0,.6);
+}
