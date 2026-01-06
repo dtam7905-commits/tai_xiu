@@ -1,46 +1,24 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GOLD SLOT</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-
-<div class="app">
-  <div class="top">
-    <div class="logo">GOLD SLOT</div>
-    <div class="money">💰 <span id="money">100000</span></div>
-  </div>
+<div id="app">
+  <div class="header">GOLD SLOT</div>
+  <div class="balance">💰 <span id="balance"></span></div>
 
   <div class="slot-frame">
     <div class="reels">
-      <div class="reel" id="r0"></div>
-      <div class="reel" id="r1"></div>
-      <div class="reel" id="r2"></div>
-      <div class="reel" id="r3"></div>
-      <div class="reel" id="r4"></div>
+      <div class="reel"><div class="reel-strip"></div></div>
+      <div class="reel"><div class="reel-strip"></div></div>
+      <div class="reel"><div class="reel-strip"></div></div>
+      <div class="reel"><div class="reel-strip"></div></div>
+      <div class="reel"><div class="reel-strip"></div></div>
     </div>
   </div>
 
   <div class="controls">
     <div class="bet">
-      Cược: <span id="bet">1000</span>
+      <button id="minus">-</button>
+      <button id="allin">ALL IN</button>
+      <button id="plus">+</button>
     </div>
-
-    <div class="buttons">
-      <button onclick="changeBet(-1000)">➖</button>
-      <button onclick="allIn()">ALL IN</button>
-      <button onclick="changeBet(1000)">➕</button>
-    </div>
-
-    <button class="spin" onclick="spin()">🎰 SPIN</button>
-
-    <div class="result" id="result"></div>
+    <button id="spin">🎰 SPIN</button>
+    <div class="win" id="win"></div>
   </div>
 </div>
-
-<script src="game.js"></script>
-</body>
-</html>
