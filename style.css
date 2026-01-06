@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: #ffd700;
+  text-align: center;
+}
+
+/* ===== SCREEN ===== */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ===== LOBBY ===== */
+.top-logo {
+  font-size: 42px;
+  font-weight: bold;
+  margin: 20px;
+  color: gold;
+  text-shadow: 0 0 10px #ffcc00;
+  cursor: pointer;
+}
+
+.games {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.card {
+  width: 150px;
+  padding: 20px;
+  background: linear-gradient(#111, #000);
+  border: 2px solid gold;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255,215,0,0.4);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px gold;
+}
+
+.card.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ===== GAME ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.header button {
+  background: gold;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.info {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.dice {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.die {
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+  font-size: 36px;
+  background: #111;
+  border: 2px solid gold;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px #000;
+}
+
+input[type=number] {
+  width: 120px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid gold;
+  background: #000;
+  color: gold;
+}
+
+.buttons button {
+  margin: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  border-radius: 30px;
+  border: none;
+  font-weight: bold;
+  color: #000;
+  background: linear-gradient(#ffd700, #ffb700);
+  box-shadow: 0 0 10px gold;
+}
+
+.buttons button:active {
+  transform: scale(0.95);
+}
+
+.history {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* ===== ADMIN ===== */
+.admin {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  border: 2px solid gold;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 999;
+  box-shadow: 0 0 20px gold;
+}
+
+.admin button {
+  margin: 5px;
+  padding: 6px 10px;
+  background: gold;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
