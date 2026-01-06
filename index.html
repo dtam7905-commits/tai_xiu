@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GO88 – Tài Xỉu MD5</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GO88 – Tài Xỉu</title>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-
 <div class="app">
-  <div class="logo">GO88</div>
 
-  <div class="info">
+<header class="top">
+  <div class="logo">GO88</div>
+  <div class="stats">
     <span>💰 <b id="money">10000</b></span>
     <span>⏳ <b id="time">15</b>s</span>
-    <span>🔒 <b id="md5">----</b></span>
+  </div>
+</header>
+
+<div class="panel">
+  <div class="md5">🔒 MD5: <span id="md5">----</span></div>
+
+  <div class="bowl-wrap">
+    <div id="bowl" class="bowl"></div>
   </div>
 
-  <div class="dice">
-    <img id="d1">
-    <img id="d2">
-    <img id="d3">
+  <div class="dice-row">
+    <div class="dice" id="d1">?</div>
+    <div class="dice" id="d2">?</div>
+    <div class="dice" id="d3">?</div>
   </div>
 
   <div class="history" id="history"></div>
 
-  <input id="bet" type="number" value="100">
+  <div class="chips">
+    <button data-chip="100">100</button>
+    <button data-chip="1000">1K</button>
+    <button data-chip="5000">5K</button>
+    <button id="allin">ALL IN</button>
+  </div>
 
   <div class="actions">
-    <button class="btn tai" onclick="bet('tai')">TÀI</button>
-    <button class="btn xiu" onclick="bet('xiu')">XỈU</button>
+    <button id="betBtn">ĐẶT CƯỢC</button>
   </div>
 </div>
 
-<audio id="win" src="assets/win.mp3"></audio>
-<audio id="lose" src="assets/lose.mp3"></audio>
-
+</div>
 <script src="game.js"></script>
 </body>
 </html>
