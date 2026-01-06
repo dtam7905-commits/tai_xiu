@@ -3,59 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GO88 DEMO</title>
+  <title>GO88 - Tài Xỉu MD5</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===== LOBBY ===== -->
-<div id="lobby" class="screen active">
-  <div class="top-logo" id="logo">GO88</div>
+<div class="app">
+  <div class="panel">
 
-  <div class="games">
-    <div class="card" onclick="enterGame()">🎲 TÀI XỈU MD5</div>
-    <div class="card disabled">🎥 LIVE</div>
-    <div class="card disabled">🎯 XÓC ĐĨA</div>
+    <h1 class="logo">GO88</h1>
+
+    <div class="info">
+      <div>💰 Tiền: <span id="money">10000</span></div>
+      <div>⏳ Còn: <span id="time">15</span>s</div>
+      <div>🔒 MD5: <span id="md5">----</span></div>
+    </div>
+
+    <div class="dice-box">
+      <div class="dice">?</div>
+      <div class="dice">?</div>
+      <div class="dice">?</div>
+    </div>
+
+    <input id="bet" type="number" value="100" min="1"/>
+
+    <div class="buttons">
+      <button class="btn tai" onclick="bet('tai')">TÀI</button>
+      <button class="btn xiu" onclick="bet('xiu')">XỈU</button>
+    </div>
+
+    <div class="result" id="result">Đặt cược</div>
+
   </div>
-</div>
-
-<!-- ===== GAME ===== -->
-<div id="game" class="screen">
-  <div class="header">
-    <span id="title">🎲 TÀI XỈU MD5</span>
-    <button onclick="backLobby()">⬅ Lobby</button>
-  </div>
-
-  <div class="info">
-    💰 Tiền: <span id="money">10000</span><br>
-    ⏱ Còn: <span id="time">20</span>s<br>
-    🔐 MD5: <span id="md5">---</span>
-  </div>
-
-  <div class="dice">
-    <div class="die" id="d1">?</div>
-    <div class="die" id="d2">?</div>
-    <div class="die" id="d3">?</div>
-  </div>
-
-  <input id="bet" type="number" value="100" />
-
-  <div class="buttons">
-    <button onclick="bet('TAI')">TÀI</button>
-    <button onclick="bet('XIU')">XỈU</button>
-  </div>
-
-  <div class="history" id="history"></div>
-</div>
-
-<!-- ===== ADMIN ===== -->
-<div id="admin" class="admin hidden">
-  <h3>ADMIN</h3>
-  <button onclick="setForce('TAI')">ÉP TÀI</button>
-  <button onclick="setForce('XIU')">ÉP XỈU</button>
-  <button onclick="setForce(null)">RANDOM</button>
-  <input id="setMoney" placeholder="Set tiền"/>
-  <button onclick="applyMoney()">OK</button>
 </div>
 
 <script src="game.js"></script>
