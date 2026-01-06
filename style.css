@@ -1,95 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, #222 0%, #000 70%);
+  background: radial-gradient(circle at top, #222, #000);
+  font-family: system-ui, sans-serif;
   color: #ffd24d;
 }
 
 .app {
   max-width: 420px;
   margin: auto;
-  min-height: 100vh;
   padding: 16px;
-  box-sizing: border-box;
 }
 
-/* HEADER */
-.header {
-  text-align: center;
-  margin-bottom: 12px;
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 800;
-  text-shadow: 0 0 15px #ffcc00;
+  text-shadow: 0 0 15px gold;
 }
 
-.stats {
-  margin-top: 8px;
-  font-size: 14px;
-  opacity: 0.9;
+.money {
+  font-size: 16px;
 }
 
-/* KHUNG GAME */
-.game-frame {
-  margin: 16px 0;
-  padding: 16px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #1a1a1a, #000);
-  box-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
+.slot-frame {
+  margin: 20px 0;
+  padding: 12px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #111, #000);
+  box-shadow: 0 0 30px rgba(255,215,0,.4);
+}
+
+.reels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reel {
+  width: 60px;
+  height: 180px;
+  background: #000;
+  border-radius: 12px;
+  border: 2px solid gold;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 32px;
+  box-shadow: inset 0 0 10px rgba(255,215,0,.3);
+}
+
+.controls {
   text-align: center;
 }
 
-/* BÁT / XÚC XẮC */
-.dice-area {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 12px 0;
+.bet {
+  margin-bottom: 8px;
 }
 
-.dice {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  background: #111;
-  border: 2px solid #ffcc00;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  box-shadow: 0 0 10px rgba(255,204,0,.4);
-}
-
-/* CHIP */
-.chips {
+.buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-bottom: 10px;
 }
 
-.chip {
-  flex: 1;
-  margin: 0 4px;
-  padding: 8px 0;
+button {
+  padding: 10px 14px;
   border-radius: 20px;
+  border: none;
   background: #222;
-  border: 1px solid #ffcc00;
-  color: #ffcc00;
-  font-weight: 600;
+  color: gold;
+  font-weight: 700;
 }
 
-/* NÚT ĐẶT CƯỢC */
-.bet-btn {
-  margin-top: 14px;
+.spin {
   width: 100%;
   padding: 14px;
-  border-radius: 30px;
-  background: linear-gradient(180deg, #ffd84d, #ffb700);
-  color: #000;
   font-size: 18px;
-  font-weight: 800;
-  border: none;
-  box-shadow: 0 0 20px rgba(255,200,0,.6);
+  background: linear-gradient(180deg, gold, orange);
+  color: #000;
+  box-shadow: 0 0 20px rgba(255,215,0,.6);
+}
+
+.result {
+  margin-top: 10px;
+  min-height: 24px;
+  font-weight: 700;
 }
