@@ -1,208 +1,63 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tài Xỉu</title>
-
-<style>
-body{
-  margin:0;
-  background:radial-gradient(circle at top,#222,#000);
-  font-family:-apple-system,BlinkMacSystemFont;
-  color:#fff;
-  text-align:center;
-}
-header{
-  padding:10px;
-  font-weight:600;
-  letter-spacing:1px;
-}
-.top{
-  display:flex;
-  justify-content:space-around;
-  font-size:14px;
-  opacity:.9;
-}
-#hash{font-size:11px;color:#aaa;margin-top:4px}
-
-.board{
-  margin:20px auto;
-}
-.dice{
-  font-size:52px;
-  margin:10px 0;
-  animation:shake .6s infinite alternate;
-}
-.stop{animation:none}
-
-@keyframes shake{
-  from{transform:translateX(-3px)}
-  to{transform:translateX(3px)}
-}
-
-.bet-area{
-  display:flex;
-  justify-content:space-around;
-  margin:20px 10px;
-}
-.side{
-  width:45%;
-  padding:15px 0;
-  border-radius:16px;
-  font-size:22px;
-  font-weight:700;
-  box-shadow:0 0 15px #000 inset;
-}
-.tai{background:linear-gradient(#d4a017,#8b6508)}
-.xiu{background:linear-gradient(#3a7bd5,#003366)}
-
-.active{outline:3px solid #fff}
-
-input{
-  width:120px;
-  padding:6px;
-  border-radius:10px;
-  border:none;
-  text-align:center;
-  font-size:16px;
-}
-
-#result{
-  font-size:28px;
-  font-weight:800;
-  margin:10px;
-}
-#history{
-  font-size:12px;
-  opacity:.85;
-  margin-bottom:15px;
-}
-
-.admin{
-  display:none;
-  background:#111;
-  padding:10px;
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GO88 DEMO</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header>🎲 TÀI XỈU</header>
+<!-- ===== LOBBY ===== -->
+<div id="lobby" class="screen active">
+  <div class="top-logo" id="logo">GO88</div>
 
-<div class="top">
-  <div>💰 <span id="money">10000</span></div>
-  <div>⏱ <span id="time">20</span>s</div>
-</div>
-<div id="hash">MD5: …</div>
-
-<div class="board">
-  <div id="dice" class="dice">🎲 🎲 🎲</div>
-</div>
-
-<input id="bet" value="100"><br><br>
-
-<div class="bet-area">
-  <div class="side tai" onclick="choose('tai')">TÀI</div>
-  <div class="side xiu" onclick="choose('xiu')">XỈU</div>
+  <div class="games">
+    <div class="card" onclick="enterGame()">🎲 TÀI XỈU MD5</div>
+    <div class="card disabled">🎥 LIVE</div>
+    <div class="card disabled">🎯 XÓC ĐĨA</div>
+  </div>
 </div>
 
-<div id="result"></div>
-<div id="history"></div>
+<!-- ===== GAME ===== -->
+<div id="game" class="screen">
+  <div class="header">
+    <span id="title">🎲 TÀI XỈU MD5</span>
+    <button onclick="backLobby()">⬅ Lobby</button>
+  </div>
 
-<!-- ADMIN -->
-<div class="admin" id="admin">
-  <select id="force">
-    <option value="none">Không ép</option>
-    <option value="tai">Ép Tài</option>
-    <option value="xiu">Ép Xỉu</option>
-    <option value="triple">Ép Tam Hoa</option>
-  </select>
+  <div class="info">
+    💰 Tiền: <span id="money">10000</span><br>
+    ⏱ Còn: <span id="time">20</span>s<br>
+    🔐 MD5: <span id="md5">---</span>
+  </div>
+
+  <div class="dice">
+    <div class="die" id="d1">?</div>
+    <div class="die" id="d2">?</div>
+    <div class="die" id="d3">?</div>
+  </div>
+
+  <input id="bet" type="number" value="100" />
+
+  <div class="buttons">
+    <button onclick="bet('TAI')">TÀI</button>
+    <button onclick="bet('XIU')">XỈU</button>
+  </div>
+
+  <div class="history" id="history"></div>
 </div>
 
-<script>
-let money=+localStorage.money||10000;
-let betSide=null,time=20;
-let history=[];
-let admin=JSON.parse(localStorage.admin||'{"force":"none"}');
-moneyEl.innerText=money;
+<!-- ===== ADMIN ===== -->
+<div id="admin" class="admin hidden">
+  <h3>ADMIN</h3>
+  <button onclick="setForce('TAI')">ÉP TÀI</button>
+  <button onclick="setForce('XIU')">ÉP XỈU</button>
+  <button onclick="setForce(null)">RANDOM</button>
+  <input id="setMoney" placeholder="Set tiền"/>
+  <button onclick="applyMoney()">OK</button>
+</div>
 
-function choose(s){
-  betSide=s;
-  document.querySelectorAll('.side').forEach(x=>x.classList.remove('active'));
-  document.querySelector('.'+s).classList.add('active');
-}
-
-function roll(){return Math.floor(Math.random()*6)+1}
-
-function hashSeed(s){
-  return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s))
-    .then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,32));
-}
-
-let seed=Math.random().toString(36);
-async function updateHash(){hash.innerText="MD5: "+await hashSeed(seed)}
-updateHash();
-
-function openDice(){
-  dice.classList.remove("shake");
-  let d1,d2,d3,sum,res;
-  do{
-    d1=roll();d2=roll();d3=roll();
-    sum=d1+d2+d3;
-    if(d1===d2&&d2===d3)res="triple";
-    else if(sum>=11)res="tai";
-    else res="xiu";
-  }while(admin.force!=="none"&&res!==admin.force);
-
-  dice.innerText=`${d1} ${d2} ${d3}`;
-  dice.classList.add("stop");
-
-  if(betSide){
-    let b=+bet.value;
-    money+=betSide===res?b:-b;
-  }
-
-  result.innerText=res==="triple"?"🎯 TAM HOA":res.toUpperCase();
-  history.unshift(res);
-  history=history.slice(0,20);
-  historyEl.innerText="Cầu: "+history.join(" • ");
-
-  localStorage.money=money;
-  moneyEl.innerText=money;
-  betSide=null;
-  document.querySelectorAll('.side').forEach(x=>x.classList.remove('active'));
-
-  seed=Math.random().toString(36);
-  updateHash();
-}
-
-setInterval(()=>{
-  time--;
-  timeEl.innerText=time;
-  if(time<=0){
-    openDice();
-    time=20;
-    dice.classList.remove("stop");
-  }
-},1000);
-
-/* admin */
-document.addEventListener("keydown",e=>{
-  if(e.ctrlKey&&e.altKey&&e.key==="a"){
-    if(prompt("PIN")==="1234") adminBox.style.display="block";
-  }
-});
-force.onchange=()=>{
-  admin.force=force.value;
-  localStorage.admin=JSON.stringify(admin);
-};
-</script>
-
+<script src="game.js"></script>
 </body>
 </html>
