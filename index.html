@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Tài Xỉu</title>
+<style>
+body{
+  background:#0b0b0b;
+  color:#fff;
+  font-family:Arial;
+  text-align:center;
+}
+#dice{font-size:50px;margin:15px}
+button{padding:10px 30px;font-size:18px;margin:5px}
+input{padding:5px;font-size:16px;width:100px}
+#history{font-size:14px;margin-top:10px}
+.admin{display:none}
+</style>
+</head>
+<body>
+
+<h1>🎲 TÀI XỈU</h1>
+
+<div>💰 Tiền: <span id="money">10000</span></div>
+<div>⏱️ Còn: <span id="time">20</span>s</div>
+
+<div>MD5: <span id="hash"></span></div>
+
+<div id="dice">🎲 🎲 🎲</div>
+
+<input id="bet" value="100">
+<br>
+<button onclick="bet('tai')">TÀI</button>
+<button onclick="bet('xiu')">XỈU</button>
+
+<div id="result"></div>
+<div id="history"></div>
+
+<!-- ADMIN ẨN -->
+<div class="admin" id="admin">
+  <h3>ADMIN</h3>
+  <select id="force">
+    <option value="none">Không ép</option>
+    <option value="tai">Ép Tài</option>
+    <option value="xiu">Ép Xỉu</option>
+    <option value="triple">Ép Tam Hoa</option>
+  </select>
+</div>
+
+<script>
+/* ====== STATE ====== */
+let money = +localStorage.money || 10000;
+let betSide = null;
+let time = 20;
+let history = [];
+let admin = JSON.parse(localStorage.admin||'{"force":"none"}');
+
+/* ====== UI ====== */
+const moneyEl = money=>document.getElementById("money").innerText=money;
+moneyEl(money);
+
+/* ====== SEED + MD5 ====== */
+function md5(str){
+  return crypto.subtle.digest("SHA-256",new TextEncoder().encode(str))
+    .then(buf=>Array.from(new Uint8Array(buf))
+    .map(x=>x.toString(16).padStart(2,"0")).join(""));
+}
+
+let seed = Math.random().toString(36).slice(2);
+async function updateHash(){
+  document.getElementById("hash").innerText = (await md5(seed)).slice(0,32);
+}
+updateHash();
+
+/* ====== GAME ====== */
+function roll(){return Math.floor(Math.random()*6)+1}
+
+function bet(side){betSide=side}
+
+function openDice(){
+  let d1,d2,d3,sum,result;
+  do{
+    d1=roll();d2=roll();d3=roll();
+    sum=d1+d2+d3;
+    if(d1===d2&&d2===d3) result="triple";
+    else if(sum>=11) result="tai";
+    else result="xiu";
+  }while(admin.force!=="none"&&result!==admin.force);
+
+  document.getElementById("dice").innerText=
+    `${d1} ${d2} ${d3} (${sum})`;
+
+  if(betSide){
+    let b=+bet.value;
+    if(betSide===result) money+=b;
+    else money-=b;
+  }
+
+  history.unshift(result);
+  history=history.slice(0,15);
+  document.getElementById("history").innerText=
+    "Cầu: "+history.join(" - ");
+
+  moneyEl(money);
+  localStorage.money=money;
+  betSide=null;
+
+  seed=Math.random().toString(36).slice(2);
+  updateHash();
+}
+
+/* ====== TIMER ====== */
+setInterval(()=>{
+  time--;
+  document.getElementById("time").innerText=time;
+  if(time<=0){
+    openDice();
+    time=20;
+  }
+},1000);
+
+/* ====== ADMIN HOTKEY ====== */
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey&&e.altKey&&e.key==="a"){
+    let pin=prompt("PIN?");
+    if(pin==="1234"){
+      adminBox.style.display="block";
+    }
+  }
+});
+
+force.onchange=()=>{
+  admin.force=force.value;
+  localStorage.admin=JSON.stringify(admin);
+};
+</script>
+
+</body>
+</html>
