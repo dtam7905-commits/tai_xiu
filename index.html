@@ -1,41 +1,40 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GO88 - Tài Xỉu MD5</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GO88 – Tài Xỉu MD5</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
-  <div class="panel">
+  <div class="logo">GO88</div>
 
-    <h1 class="logo">GO88</h1>
+  <div class="info">
+    <span>💰 <b id="money">10000</b></span>
+    <span>⏳ <b id="time">15</b>s</span>
+    <span>🔒 <b id="md5">----</b></span>
+  </div>
 
-    <div class="info">
-      <div>💰 Tiền: <span id="money">10000</span></div>
-      <div>⏳ Còn: <span id="time">15</span>s</div>
-      <div>🔒 MD5: <span id="md5">----</span></div>
-    </div>
+  <div class="dice">
+    <img id="d1">
+    <img id="d2">
+    <img id="d3">
+  </div>
 
-    <div class="dice-box">
-      <div class="dice">?</div>
-      <div class="dice">?</div>
-      <div class="dice">?</div>
-    </div>
+  <div class="history" id="history"></div>
 
-    <input id="bet" type="number" value="100" min="1"/>
+  <input id="bet" type="number" value="100">
 
-    <div class="buttons">
-      <button class="btn tai" onclick="bet('tai')">TÀI</button>
-      <button class="btn xiu" onclick="bet('xiu')">XỈU</button>
-    </div>
-
-    <div class="result" id="result">Đặt cược</div>
-
+  <div class="actions">
+    <button class="btn tai" onclick="bet('tai')">TÀI</button>
+    <button class="btn xiu" onclick="bet('xiu')">XỈU</button>
   </div>
 </div>
+
+<audio id="win" src="assets/win.mp3"></audio>
+<audio id="lose" src="assets/lose.mp3"></audio>
 
 <script src="game.js"></script>
 </body>
