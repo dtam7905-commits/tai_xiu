@@ -2,43 +2,121 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tài Xỉu</title>
+
 <style>
 body{
-  background:#0b0b0b;
+  margin:0;
+  background:radial-gradient(circle at top,#222,#000);
+  font-family:-apple-system,BlinkMacSystemFont;
   color:#fff;
-  font-family:Arial;
   text-align:center;
 }
-#dice{font-size:50px;margin:15px}
-button{padding:10px 30px;font-size:18px;margin:5px}
-input{padding:5px;font-size:16px;width:100px}
-#history{font-size:14px;margin-top:10px}
-.admin{display:none}
+header{
+  padding:10px;
+  font-weight:600;
+  letter-spacing:1px;
+}
+.top{
+  display:flex;
+  justify-content:space-around;
+  font-size:14px;
+  opacity:.9;
+}
+#hash{font-size:11px;color:#aaa;margin-top:4px}
+
+.board{
+  margin:20px auto;
+}
+.dice{
+  font-size:52px;
+  margin:10px 0;
+  animation:shake .6s infinite alternate;
+}
+.stop{animation:none}
+
+@keyframes shake{
+  from{transform:translateX(-3px)}
+  to{transform:translateX(3px)}
+}
+
+.bet-area{
+  display:flex;
+  justify-content:space-around;
+  margin:20px 10px;
+}
+.side{
+  width:45%;
+  padding:15px 0;
+  border-radius:16px;
+  font-size:22px;
+  font-weight:700;
+  box-shadow:0 0 15px #000 inset;
+}
+.tai{background:linear-gradient(#d4a017,#8b6508)}
+.xiu{background:linear-gradient(#3a7bd5,#003366)}
+
+.active{outline:3px solid #fff}
+
+input{
+  width:120px;
+  padding:6px;
+  border-radius:10px;
+  border:none;
+  text-align:center;
+  font-size:16px;
+}
+
+#result{
+  font-size:28px;
+  font-weight:800;
+  margin:10px;
+}
+#history{
+  font-size:12px;
+  opacity:.85;
+  margin-bottom:15px;
+}
+
+.admin{
+  display:none;
+  background:#111;
+  padding:10px;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+}
 </style>
 </head>
+
 <body>
 
-<h1>🎲 TÀI XỈU</h1>
+<header>🎲 TÀI XỈU</header>
 
-<div>💰 Tiền: <span id="money">10000</span></div>
-<div>⏱️ Còn: <span id="time">20</span>s</div>
+<div class="top">
+  <div>💰 <span id="money">10000</span></div>
+  <div>⏱ <span id="time">20</span>s</div>
+</div>
+<div id="hash">MD5: …</div>
 
-<div>MD5: <span id="hash"></span></div>
+<div class="board">
+  <div id="dice" class="dice">🎲 🎲 🎲</div>
+</div>
 
-<div id="dice">🎲 🎲 🎲</div>
+<input id="bet" value="100"><br><br>
 
-<input id="bet" value="100">
-<br>
-<button onclick="bet('tai')">TÀI</button>
-<button onclick="bet('xiu')">XỈU</button>
+<div class="bet-area">
+  <div class="side tai" onclick="choose('tai')">TÀI</div>
+  <div class="side xiu" onclick="choose('xiu')">XỈU</div>
+</div>
 
 <div id="result"></div>
 <div id="history"></div>
 
-<!-- ADMIN ẨN -->
+<!-- ADMIN -->
 <div class="admin" id="admin">
-  <h3>ADMIN</h3>
   <select id="force">
     <option value="none">Không ép</option>
     <option value="tai">Ép Tài</option>
@@ -48,87 +126,78 @@ input{padding:5px;font-size:16px;width:100px}
 </div>
 
 <script>
-/* ====== STATE ====== */
-let money = +localStorage.money || 10000;
-let betSide = null;
-let time = 20;
-let history = [];
-let admin = JSON.parse(localStorage.admin||'{"force":"none"}');
+let money=+localStorage.money||10000;
+let betSide=null,time=20;
+let history=[];
+let admin=JSON.parse(localStorage.admin||'{"force":"none"}');
+moneyEl.innerText=money;
 
-/* ====== UI ====== */
-const moneyEl = money=>document.getElementById("money").innerText=money;
-moneyEl(money);
-
-/* ====== SEED + MD5 ====== */
-function md5(str){
-  return crypto.subtle.digest("SHA-256",new TextEncoder().encode(str))
-    .then(buf=>Array.from(new Uint8Array(buf))
-    .map(x=>x.toString(16).padStart(2,"0")).join(""));
+function choose(s){
+  betSide=s;
+  document.querySelectorAll('.side').forEach(x=>x.classList.remove('active'));
+  document.querySelector('.'+s).classList.add('active');
 }
 
-let seed = Math.random().toString(36).slice(2);
-async function updateHash(){
-  document.getElementById("hash").innerText = (await md5(seed)).slice(0,32);
-}
-updateHash();
-
-/* ====== GAME ====== */
 function roll(){return Math.floor(Math.random()*6)+1}
 
-function bet(side){betSide=side}
+function hashSeed(s){
+  return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s))
+    .then(b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,32));
+}
+
+let seed=Math.random().toString(36);
+async function updateHash(){hash.innerText="MD5: "+await hashSeed(seed)}
+updateHash();
 
 function openDice(){
-  let d1,d2,d3,sum,result;
+  dice.classList.remove("shake");
+  let d1,d2,d3,sum,res;
   do{
     d1=roll();d2=roll();d3=roll();
     sum=d1+d2+d3;
-    if(d1===d2&&d2===d3) result="triple";
-    else if(sum>=11) result="tai";
-    else result="xiu";
-  }while(admin.force!=="none"&&result!==admin.force);
+    if(d1===d2&&d2===d3)res="triple";
+    else if(sum>=11)res="tai";
+    else res="xiu";
+  }while(admin.force!=="none"&&res!==admin.force);
 
-  document.getElementById("dice").innerText=
-    `${d1} ${d2} ${d3} (${sum})`;
+  dice.innerText=`${d1} ${d2} ${d3}`;
+  dice.classList.add("stop");
 
   if(betSide){
     let b=+bet.value;
-    if(betSide===result) money+=b;
-    else money-=b;
+    money+=betSide===res?b:-b;
   }
 
-  history.unshift(result);
-  history=history.slice(0,15);
-  document.getElementById("history").innerText=
-    "Cầu: "+history.join(" - ");
+  result.innerText=res==="triple"?"🎯 TAM HOA":res.toUpperCase();
+  history.unshift(res);
+  history=history.slice(0,20);
+  historyEl.innerText="Cầu: "+history.join(" • ");
 
-  moneyEl(money);
   localStorage.money=money;
+  moneyEl.innerText=money;
   betSide=null;
+  document.querySelectorAll('.side').forEach(x=>x.classList.remove('active'));
 
-  seed=Math.random().toString(36).slice(2);
+  seed=Math.random().toString(36);
   updateHash();
 }
 
-/* ====== TIMER ====== */
 setInterval(()=>{
   time--;
-  document.getElementById("time").innerText=time;
+  timeEl.innerText=time;
   if(time<=0){
     openDice();
     time=20;
+    dice.classList.remove("stop");
   }
 },1000);
 
-/* ====== ADMIN HOTKEY ====== */
+/* admin */
 document.addEventListener("keydown",e=>{
   if(e.ctrlKey&&e.altKey&&e.key==="a"){
-    let pin=prompt("PIN?");
-    if(pin==="1234"){
-      adminBox.style.display="block";
-    }
+    if(prompt("PIN")==="1234") adminBox.style.display="block";
   }
 });
-
 force.onchange=()=>{
   admin.force=force.value;
   localStorage.admin=JSON.stringify(admin);
